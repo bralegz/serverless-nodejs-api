@@ -3,12 +3,29 @@ org: bralegz
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: serverless-nodejs-api
 
+useDotenv: true
+
+# We add the environment provider to preload the environment variables.
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs22.x
+  environment:
+    DEBUG: ${env:DEBUG, 0}
+    DATABASE_URL: ${env:DATABASE_URL, "fallback value"}
 
 functions:
   api:
-    handler: handler.handler
+    handler: src/handler.handler
     events:
       - httpApi: "*"
+
+custom: 
+  dotenv:
+    exclude:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
