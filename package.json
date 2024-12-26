@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
+    "aws-sdk": "^2.1692.0",
     "drizzle-orm": "^0.38.2",
     "express": "^4.19.2",
     "serverless-http": "^3.2.0"

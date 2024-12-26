@@ -1,15 +1,28 @@
 const serverless = require('serverless-http');
 const express = require('express');
+const AWS = require("aws-sdk");
 const { neon, neonConfig } = require('@neondatabase/serverless');
 
+const AWS_REGION = 'us-east-2';
+
 const app = express();
+const ssm = new AWS.SSM({ region: AWS_REGION });
+const STAGE = process.env.STAGE || 'prod';
+
+//this is the parameter name in aws systems manaer
+const DATABASE_URL_SSM_PARAM = `/serverless-nodejs-api/${STAGE}/database-url`;
 
 async function dbClient() {
   //for http connections
   //non-pooling
   // neonConfig.fetchConnectionCache = true; this line is deprecated
-  console.log('DATABASE_URL:', process.env.DATABASE_URL);
-  const sql = neon(process.env.DATABASE_URL);
+
+  const paramStoreData = await ssm.getParameter({
+    Name: DATABASE_URL_SSM_PARAM,
+    WithDecryption: true,
+  }).promise()
+
+  const sql = neon(paramStoreData.Parameter.Value);
 
   return sql;
 }
