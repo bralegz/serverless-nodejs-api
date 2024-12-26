@@ -29,11 +29,12 @@ async function dbClient() {
 
 app.get('/', async (req, res, next) => {
   const sql = await dbClient();
-  const [results] = await sql`select now();`;
-  console.log(process.env.DATABASE_URL)
+  const [dbNowResult] = await sql`select now();`;
+  const delta = (Date.now() - dbNowResult.now.getTime()) / 1000
+  // console.log(process.env.DATABASE_URL)
   return res.status(200).json({
     message: 'Hello from root!',
-    results: results.now
+    delta: delta
   });
 });
 
