@@ -8,6 +8,13 @@
       "when": 1735260312013,
       "tag": "0000_grey_stepford_cuckoos",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735330800314,
+      "tag": "0001_panoramic_paladin",
+      "breakpoints": true
     }
   ]
 }
